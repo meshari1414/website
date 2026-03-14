@@ -1,0 +1,1267 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الأشخاص - ChatM</title>
+  <style>
+    :root {
+      --bg-top: #c8d3e2;
+      --bg-bottom: #bcc8da;
+      --card: #f7f7f7;
+      --line: #d8d8e5;
+      --text: #1c1552;
+      --muted: #7b769f;
+      --brand: #1c1552;
+    }
+
+    body.dark {
+      --bg-top: #1a1b26;
+      --bg-bottom: #141522;
+      --card: #1f2132;
+      --line: #34374f;
+      --text: #eceefe;
+      --muted: #a6abc7;
+      --brand: #7f8cff;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .page {
+      max-width: 560px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 30px;
+      box-shadow: 0 20px 36px rgba(24, 39, 75, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      overflow: hidden;
+      min-height: calc(100vh - 40px);
+    }
+
+    .header {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-img {
+      display: block;
+      height: 32px;
+      width: auto;
+    }
+
+    .actions {
+      position: relative;
+    }
+
+    .plus-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 0;
+      background: var(--brand);
+      color: #fff;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .menu {
+      position: absolute;
+      top: 46px;
+      left: 0;
+      min-width: 180px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 12px 20px rgba(24, 39, 75, 0.14);
+      padding: 4px 0;
+      display: none;
+      z-index: 10;
+    }
+
+    .menu.open {
+      display: block;
+    }
+
+    .menu button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      border-radius: 0;
+      padding: 10px 12px;
+      text-align: center;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .menu button + button {
+      border-top: 1px solid #eceaf6;
+    }
+
+    .menu button:hover {
+      background: #f7f6ff;
+    }
+
+    .sub {
+      margin: 8px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .people-list {
+      list-style: none;
+      margin: 0;
+      padding: 0 14px;
+      display: grid;
+      gap: 0;
+      max-height: calc(100vh - 190px);
+      overflow: auto;
+    }
+
+    .people-list li + li {
+      border-top: 1px solid var(--line);
+    }
+
+    .person-link {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      border-radius: 0;
+      padding: 14px 6px;
+      min-height: 0;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 14px;
+      color: var(--text);
+      transition: 0.15s ease;
+    }
+
+    .person-link:hover {
+      background: #f8f7ff;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 20px;
+      flex: 0 0 auto;
+    }
+
+    .person-meta {
+      display: grid;
+      gap: 3px;
+      text-align: right;
+    }
+
+    .person-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .person-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .unread-badge {
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #b42318;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .person-status {
+      font-size: 12px;
+      color: #24a148;
+    }
+
+    .person-preview {
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 220px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 9, 27, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 20;
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      width: min(460px, 100%);
+      background: var(--card);
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      box-shadow: 0 20px 36px rgba(24, 39, 75, 0.2);
+      padding: 18px;
+    }
+
+    .modal h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .modal .desc {
+      margin: 6px 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .field input {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(28, 21, 82, 0.12);
+    }
+
+    .members {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      max-height: 180px;
+      overflow: auto;
+      padding: 8px;
+      display: grid;
+      gap: 6px;
+      background: var(--card);
+    }
+
+    .member-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 8px;
+    }
+
+    .member-item:hover {
+      background: #f7f5ff;
+    }
+
+    .modal-actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .btn.primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .btn.ghost {
+      background: #eceaf8;
+      color: var(--text);
+    }
+
+    body.dark .menu button + button {
+      border-top-color: var(--line);
+    }
+
+    body.dark .menu button:hover {
+      background: rgba(127, 140, 255, 0.14);
+    }
+
+    body.dark .person-link:hover {
+      background: rgba(127, 140, 255, 0.1);
+    }
+
+    body.dark .plus-btn {
+      color: #fff;
+    }
+
+    body.dark .avatar {
+      color: #fff;
+    }
+
+    body.dark .btn.ghost {
+      background: #2b2f45;
+      color: #eceefe;
+    }
+
+    .error {
+      color: #b42318;
+      font-size: 12px;
+      min-height: 16px;
+      margin-top: 8px;
+    }
+
+    .group-status {
+      color: #6b5bd1;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="header-top">
+        <img class="brand-img" src="img/logo.png" alt="الشعار" />
+        <div class="actions">
+          <button id="plusBtn" class="plus-btn" type="button" aria-label="قائمة">+</button>
+          <div id="actionMenu" class="menu">
+            <button id="addFriendMenuItem" type="button">إضافة صديق</button>
+            <button id="editUsernameMenuItem" type="button">تعديل اليوزر</button>
+            <button id="createGroupMenuItem" type="button">إنشاء مجموعة جديدة</button>
+            <button id="toggleThemeMenuItem" type="button">الوضع الداكن</button>
+            <button id="logoutMenuItem" type="button">تسجيل الخروج</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <ul id="peopleList" class="people-list"></ul>
+  </main>
+
+  <div id="groupModal" class="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="إنشاء مجموعة جديدة">
+      <h2>إنشاء مجموعة جديدة</h2>
+      <p class="desc">اكتب اسم المجموعة واختر الأشخاص الذين تريد إضافتهم.</p>
+      <form id="groupForm">
+        <div class="field">
+          <label for="groupNameInput">اسم المجموعة</label>
+          <input id="groupNameInput" type="text" maxlength="40" placeholder="مثال: فريق المشروع" />
+        </div>
+        <div class="field">
+          <label>الأشخاص</label>
+          <div id="membersList" class="members"></div>
+        </div>
+        <div id="groupError" class="error"></div>
+        <div class="modal-actions">
+          <button id="cancelGroupBtn" class="btn ghost" type="button">إلغاء</button>
+          <button class="btn primary" type="submit">إنشاء المجموعة</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="friendModal" class="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="إضافة صديق">
+      <h2>إضافة صديق</h2>
+      <p class="desc">أدخل اسم المستخدم أو البريد الإلكتروني للشخص الذي تريد إضافته.</p>
+      <form id="friendForm">
+        <div class="field">
+          <label for="friendLookupInput">اليوزر أو البريد الإلكتروني</label>
+          <input id="friendLookupInput" type="text" placeholder="@username أو example@email.com" required />
+        </div>
+        <div id="friendError" class="error"></div>
+        <div class="modal-actions">
+          <button id="cancelFriendBtn" class="btn ghost" type="button">إلغاء</button>
+          <button id="submitFriendBtn" class="btn primary" type="submit">إضافة</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="usernameModal" class="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="تعديل اليوزر">
+      <h2>تعديل اليوزر</h2>
+      <p class="desc">اختر اسم مستخدم جديد (3 إلى 20 حرفًا، بدون مسافات).</p>
+      <form id="usernameForm">
+        <div class="field">
+          <label for="usernameEditInput">اسم المستخدم الجديد</label>
+          <input id="usernameEditInput" type="text" placeholder="new_username" minlength="3" maxlength="20" required />
+        </div>
+        <div id="usernameError" class="error"></div>
+        <div class="modal-actions">
+          <button id="cancelUsernameBtn" class="btn ghost" type="button">إلغاء</button>
+          <button id="submitUsernameBtn" class="btn primary" type="submit">حفظ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="requestModal" class="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="طلب إضافة صديق">
+      <h2>طلب إضافة صديق</h2>
+      <p id="requestDesc" class="desc">قام شخص بإضافتك. هل تريد إضافته؟</p>
+      <div id="requestError" class="error"></div>
+      <div class="modal-actions">
+        <button id="rejectRequestBtn" class="btn ghost" type="button">رفض</button>
+        <button id="acceptRequestBtn" class="btn primary" type="button">قبول</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./firebase-config.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      onSnapshot,
+      query,
+      where,
+      limit,
+      getDocs,
+      getDoc,
+      doc,
+      setDoc,
+      serverTimestamp,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+    const firebaseConfig = window.CHATM_FIREBASE_CONFIG;
+    const isFirebaseConfigReady =
+      firebaseConfig &&
+      firebaseConfig.apiKey &&
+      firebaseConfig.authDomain &&
+      firebaseConfig.projectId &&
+      !Object.values(firebaseConfig).some(
+        (value) => typeof value === "string" && value.includes("PUT_YOUR_")
+      );
+
+    if (isFirebaseConfigReady) {
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      let unsubscribePeople = null;
+      let unsubscribeRequests = null;
+      let pendingRedirectTimer = null;
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+      } catch (error) {
+        console.warn("Local auth persistence unavailable, using session/in-memory fallback.", error);
+      }
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          if (pendingRedirectTimer) {
+            clearTimeout(pendingRedirectTimer);
+          }
+          if (typeof unsubscribePeople === "function") {
+            unsubscribePeople();
+            unsubscribePeople = null;
+          }
+          if (typeof unsubscribeRequests === "function") {
+            unsubscribeRequests();
+            unsubscribeRequests = null;
+          }
+          pendingRedirectTimer = setTimeout(() => {
+            if (!auth.currentUser) {
+              location.replace("website.html");
+            }
+          }, 1200);
+          return;
+        }
+
+        if (pendingRedirectTimer) {
+          clearTimeout(pendingRedirectTimer);
+          pendingRedirectTimer = null;
+        }
+        if (typeof unsubscribePeople === "function") {
+          unsubscribePeople();
+        }
+        if (typeof unsubscribeRequests === "function") {
+          unsubscribeRequests();
+        }
+
+        const normalizedEmail = String(user.email || "").trim().toLowerCase();
+        setDoc(
+          doc(db, "users", user.uid),
+          {
+            email: normalizedEmail,
+            emailLower: normalizedEmail,
+            lastSeen: serverTimestamp()
+          },
+          { merge: true }
+        ).catch(() => {});
+        getDoc(doc(db, "users", user.uid))
+          .then((docSnap) => {
+            const data = docSnap.exists() ? (docSnap.data() || {}) : {};
+            window.chatmCurrentUsername = String(data.username || "");
+          })
+          .catch(() => {});
+
+        unsubscribePeople = onSnapshot(
+          collection(db, "users", user.uid, "friends"),
+          async (snapshot) => {
+            const friendStates = new Map(
+              snapshot.docs.map((docSnap) => {
+                const data = docSnap.data() || {};
+                return [
+                  docSnap.id,
+                  {
+                    unreadCount: Number(data.unreadCount || 0),
+                    lastMessageText: String(data.lastMessageText || "")
+                  }
+                ];
+              })
+            );
+            const friendIds = [...friendStates.keys()];
+            if (!friendIds.length) {
+              window.chatmPeople = [];
+              window.dispatchEvent(
+                new CustomEvent("chatm-people-updated", {
+                  detail: []
+                })
+              );
+              return;
+            }
+
+            const people = (
+              await Promise.all(
+                friendIds.map(async (friendId) => {
+                  const friendDoc = await getDoc(doc(db, "users", friendId));
+                  if (!friendDoc.exists()) return null;
+
+                  const data = friendDoc.data() || {};
+                  const friendState = friendStates.get(friendId) || {};
+                  return {
+                    id: friendDoc.id,
+                    name: data.username || data.name || (data.email ? String(data.email).split("@")[0] : "مستخدم"),
+                    online: true,
+                    unreadCount: Number(friendState.unreadCount || 0),
+                    lastMessageText: String(friendState.lastMessageText || "")
+                  };
+                })
+              )
+            ).filter(Boolean);
+
+            window.chatmPeople = people;
+            window.dispatchEvent(
+              new CustomEvent("chatm-people-updated", {
+                detail: people
+              })
+            );
+          },
+          () => {
+            window.chatmPeople = [];
+            window.dispatchEvent(
+              new CustomEvent("chatm-people-updated", {
+                detail: []
+              })
+            );
+          }
+        );
+
+        unsubscribeRequests = onSnapshot(
+          collection(db, "users", user.uid, "friendRequests"),
+          (snapshot) => {
+            const requests = snapshot.docs
+              .map((docSnap) => {
+                const data = docSnap.data() || {};
+                return {
+                  fromUid: docSnap.id,
+                  fromUsername: String(data.fromUsername || "").trim(),
+                  fromEmail: String(data.fromEmail || "").trim().toLowerCase(),
+                  createdAt: Number(data.createdAt || 0)
+                };
+              })
+              .sort((a, b) => a.createdAt - b.createdAt);
+            window.chatmFriendRequests = requests;
+            window.dispatchEvent(
+              new CustomEvent("chatm-friend-requests-updated", {
+                detail: requests
+              })
+            );
+          },
+          () => {}
+        );
+      });
+
+      window.chatmAddFriendByIdentifier = async (identifierRaw) => {
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+          return { ok: false, message: "يجب تسجيل الدخول أولًا." };
+        }
+
+        const rawInput = String(identifierRaw || "").trim();
+        const lookupInput = rawInput.replace(/^@+/, "");
+        const normalizedLookup = lookupInput.toLowerCase();
+        if (!normalizedLookup) {
+          return { ok: false, message: "أدخل اليوزر أو البريد الإلكتروني." };
+        }
+
+        if ((currentUser.email || "").toLowerCase() === normalizedLookup) {
+          return { ok: false, message: "لا يمكنك إضافة نفسك كصديق." };
+        }
+
+        try {
+          let usersSnapshot = null;
+          const isEmailLookup = normalizedLookup.includes("@");
+
+          if (isEmailLookup) {
+            const usersByEmailLowerQuery = query(
+              collection(db, "users"),
+              where("emailLower", "==", normalizedLookup),
+              limit(1)
+            );
+            usersSnapshot = await getDocs(usersByEmailLowerQuery);
+            if (usersSnapshot.empty) {
+              const usersByEmailQuery = query(
+                collection(db, "users"),
+                where("email", "==", rawInput),
+                limit(1)
+              );
+              usersSnapshot = await getDocs(usersByEmailQuery);
+            }
+          } else {
+            const usersByUsernameLowerQuery = query(
+              collection(db, "users"),
+              where("usernameLower", "==", normalizedLookup),
+              limit(1)
+            );
+            usersSnapshot = await getDocs(usersByUsernameLowerQuery);
+            if (usersSnapshot.empty) {
+              const usersByUsernameQuery = query(
+                collection(db, "users"),
+                where("username", "==", lookupInput),
+                limit(1)
+              );
+              usersSnapshot = await getDocs(usersByUsernameQuery);
+            }
+          }
+
+          if (usersSnapshot.empty) {
+            return { ok: false, message: "لا يوجد حساب بهذا اليوزر أو البريد، أو أن الحساب لم يسجل دخول بعد." };
+          }
+
+          const friendDoc = usersSnapshot.docs[0];
+          if (friendDoc.id === currentUser.uid) {
+            return { ok: false, message: "لا يمكنك إضافة نفسك كصديق." };
+          }
+
+          await setDoc(
+            doc(db, "users", currentUser.uid, "friends", friendDoc.id),
+            {
+              email: String(friendDoc.data()?.email || "").toLowerCase(),
+              username: String(friendDoc.data()?.username || ""),
+              unreadCount: 0,
+              createdAt: Date.now()
+            },
+            { merge: true }
+          );
+
+          await setDoc(
+            doc(db, "users", friendDoc.id, "friendRequests", currentUser.uid),
+            {
+              fromUid: currentUser.uid,
+              fromEmail: String(currentUser.email || "").toLowerCase(),
+              fromUsername: String(window.chatmCurrentUsername || ""),
+              createdAt: Date.now()
+            },
+            { merge: true }
+          );
+
+          return { ok: true, message: "تمت الإضافة، وأُرسل للطرف الآخر طلب إضافة متبادل." };
+        } catch (error) {
+          if (error?.code === "permission-denied") {
+            return { ok: false, message: "صلاحيات Firestore لا تسمح بإضافة الأصدقاء. حدّث القواعد أولًا." };
+          }
+          return { ok: false, message: "تعذر إضافة الصديق الآن. حاول مرة أخرى." };
+        }
+      };
+      window.chatmAddFriendByEmail = window.chatmAddFriendByIdentifier;
+
+      window.chatmAcceptFriendRequest = async (requestData) => {
+        const currentUser = auth.currentUser;
+        if (!currentUser || !requestData?.fromUid) {
+          return { ok: false, message: "تعذر تنفيذ العملية الآن." };
+        }
+
+        try {
+          await setDoc(
+            doc(db, "users", currentUser.uid, "friends", requestData.fromUid),
+            {
+              email: String(requestData.fromEmail || "").toLowerCase(),
+              username: String(requestData.fromUsername || ""),
+              unreadCount: 0,
+              createdAt: Date.now()
+            },
+            { merge: true }
+          );
+          await deleteDoc(doc(db, "users", currentUser.uid, "friendRequests", requestData.fromUid));
+          return { ok: true };
+        } catch (error) {
+          return { ok: false, message: "تعذر قبول الطلب الآن." };
+        }
+      };
+
+      window.chatmRejectFriendRequest = async (requestData) => {
+        const currentUser = auth.currentUser;
+        if (!currentUser || !requestData?.fromUid) {
+          return { ok: false, message: "تعذر تنفيذ العملية الآن." };
+        }
+
+        try {
+          await deleteDoc(doc(db, "users", currentUser.uid, "friendRequests", requestData.fromUid));
+          return { ok: true };
+        } catch (error) {
+          return { ok: false, message: "تعذر رفض الطلب الآن." };
+        }
+      };
+
+      window.chatmUpdateUsername = async (usernameRaw) => {
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+          return { ok: false, message: "يجب تسجيل الدخول أولًا." };
+        }
+
+        const username = String(usernameRaw || "").trim().replace(/^@+/, "");
+        const usernameLower = username.toLowerCase();
+        if (!/^[^\s@]{3,20}$/.test(username)) {
+          return { ok: false, message: "اليوزر يجب أن يكون من 3 إلى 20 حرفًا وبدون مسافات." };
+        }
+
+        try {
+          const existingQuery = query(
+            collection(db, "users"),
+            where("usernameLower", "==", usernameLower),
+            limit(1)
+          );
+          const existingSnapshot = await getDocs(existingQuery);
+          if (!existingSnapshot.empty && existingSnapshot.docs[0].id !== currentUser.uid) {
+            return { ok: false, message: "هذا اليوزر مستخدم بالفعل." };
+          }
+
+          await setDoc(
+            doc(db, "users", currentUser.uid),
+            {
+              username,
+              usernameLower,
+              name: username,
+              lastSeen: serverTimestamp()
+            },
+            { merge: true }
+          );
+          window.chatmCurrentUsername = username;
+          return { ok: true, message: "تم تحديث اليوزر بنجاح." };
+        } catch (error) {
+          if (error?.code === "permission-denied") {
+            return { ok: false, message: "صلاحيات Firestore لا تسمح بتعديل اليوزر." };
+          }
+          return { ok: false, message: "تعذر تحديث اليوزر الآن." };
+        }
+      };
+
+      window.chatmSignOut = async () => {
+        try {
+          await signOut(auth);
+          return { ok: true };
+        } catch (error) {
+          return { ok: false, message: "تعذر تسجيل الخروج الآن." };
+        }
+      };
+    } else {
+      location.replace("website.html");
+    }
+  </script>
+  <script>
+    let basePeople = Array.isArray(window.chatmPeople) ? [...window.chatmPeople] : [];
+    let pendingRequests = Array.isArray(window.chatmFriendRequests) ? [...window.chatmFriendRequests] : [];
+    let activeRequest = null;
+
+    const groupsStoreKey = "chatm-groups";
+    const groups = JSON.parse(localStorage.getItem(groupsStoreKey) || "[]");
+
+    const peopleList = document.getElementById("peopleList");
+    const plusBtn = document.getElementById("plusBtn");
+    const actionMenu = document.getElementById("actionMenu");
+    const addFriendMenuItem = document.getElementById("addFriendMenuItem");
+    const editUsernameMenuItem = document.getElementById("editUsernameMenuItem");
+    const createGroupMenuItem = document.getElementById("createGroupMenuItem");
+    const toggleThemeMenuItem = document.getElementById("toggleThemeMenuItem");
+    const logoutMenuItem = document.getElementById("logoutMenuItem");
+    const friendModal = document.getElementById("friendModal");
+    const friendForm = document.getElementById("friendForm");
+    const friendLookupInput = document.getElementById("friendLookupInput");
+    const friendError = document.getElementById("friendError");
+    const cancelFriendBtn = document.getElementById("cancelFriendBtn");
+    const submitFriendBtn = document.getElementById("submitFriendBtn");
+    const usernameModal = document.getElementById("usernameModal");
+    const usernameForm = document.getElementById("usernameForm");
+    const usernameEditInput = document.getElementById("usernameEditInput");
+    const usernameError = document.getElementById("usernameError");
+    const cancelUsernameBtn = document.getElementById("cancelUsernameBtn");
+    const submitUsernameBtn = document.getElementById("submitUsernameBtn");
+    const requestModal = document.getElementById("requestModal");
+    const requestDesc = document.getElementById("requestDesc");
+    const requestError = document.getElementById("requestError");
+    const rejectRequestBtn = document.getElementById("rejectRequestBtn");
+    const acceptRequestBtn = document.getElementById("acceptRequestBtn");
+    const groupModal = document.getElementById("groupModal");
+    const groupForm = document.getElementById("groupForm");
+    const groupNameInput = document.getElementById("groupNameInput");
+    const membersList = document.getElementById("membersList");
+    const groupError = document.getElementById("groupError");
+    const cancelGroupBtn = document.getElementById("cancelGroupBtn");
+    const themeStoreKey = "chatm-theme";
+
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+      document.body.classList.toggle("dark", isDark);
+      toggleThemeMenuItem.textContent = isDark ? "الوضع الفاتح" : "الوضع الداكن";
+    }
+
+    function toggleTheme() {
+      const nextTheme = document.body.classList.contains("dark") ? "light" : "dark";
+      localStorage.setItem(themeStoreKey, nextTheme);
+      applyTheme(nextTheme);
+    }
+
+    function persistGroups() {
+      localStorage.setItem(groupsStoreKey, JSON.stringify(groups));
+    }
+
+    function initials(name) {
+      return name.slice(0, 1);
+    }
+
+    function renderPeople() {
+      peopleList.innerHTML = "";
+      const allItems = [
+        ...basePeople.map((p) => ({ type: "person", ...p })),
+        ...groups.map((g) => ({ type: "group", ...g }))
+      ];
+
+      if (allItems.length === 0) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <div class="person-link" style="cursor:default;">
+            <span class="person-meta">
+              <span class="person-name">لا يوجد أصدقاء بعد</span>
+            </span>
+          </div>
+        `;
+        peopleList.appendChild(li);
+        return;
+      }
+
+      for (const item of allItems) {
+        const li = document.createElement("li");
+        const href = item.type === "person"
+          ? `chat.html?person=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}`
+          : `chat.html?group=${encodeURIComponent(item.id)}`;
+        const status = item.type === "person"
+          ? (item.online ? "متصل الآن" : "غير متصل")
+          : `${item.members.length} أعضاء`;
+        const statusClass = item.type === "group" ? "person-status group-status" : "person-status";
+        const previewText = item.type === "person"
+          ? (item.lastMessageText || status)
+          : status;
+        const unreadBadge = item.type === "person" && Number(item.unreadCount || 0) > 0
+          ? `<span class="unread-badge">${item.unreadCount}</span>`
+          : "";
+
+        li.innerHTML = `
+          <a class="person-link" href="${href}">
+            <span class="avatar">${initials(item.name)}</span>
+            <span class="person-meta">
+              <span class="person-name-row">
+                <span class="person-name">${item.name}</span>
+                ${unreadBadge}
+              </span>
+              <span class="person-preview">${previewText}</span>
+              <span class="${statusClass}">${status}</span>
+            </span>
+          </a>
+        `;
+        peopleList.appendChild(li);
+      }
+    }
+
+    function renderMembersChecklist() {
+      membersList.innerHTML = "";
+      if (!basePeople.length) {
+        const empty = document.createElement("div");
+        empty.textContent = "لا يوجد مستخدمون متاحون حاليًا.";
+        membersList.appendChild(empty);
+        return;
+      }
+      for (const person of basePeople) {
+        const wrapper = document.createElement("label");
+        wrapper.className = "member-item";
+        wrapper.innerHTML = `
+          <input type="checkbox" name="members" value="${person.id}" />
+          <span>${person.name}</span>
+        `;
+        membersList.appendChild(wrapper);
+      }
+    }
+
+    window.addEventListener("chatm-people-updated", (event) => {
+      const people = Array.isArray(event.detail) ? event.detail : [];
+      basePeople = people;
+      localStorage.setItem("chatm-people", JSON.stringify(basePeople));
+      renderMembersChecklist();
+      renderPeople();
+    });
+
+    window.addEventListener("chatm-friend-requests-updated", (event) => {
+      pendingRequests = Array.isArray(event.detail) ? event.detail : [];
+      if (activeRequest) {
+        const exists = pendingRequests.some((request) => request.fromUid === activeRequest.fromUid);
+        if (!exists) {
+          closeRequestModal();
+        }
+      }
+      showNextRequestIfAny();
+    });
+
+    function openMenu() {
+      actionMenu.classList.add("open");
+    }
+
+    function closeMenu() {
+      actionMenu.classList.remove("open");
+    }
+
+    function openGroupModal() {
+      groupModal.classList.add("open");
+      groupModal.setAttribute("aria-hidden", "false");
+      groupNameInput.focus();
+    }
+
+    function openFriendModal() {
+      friendModal.classList.add("open");
+      friendModal.setAttribute("aria-hidden", "false");
+      friendLookupInput.focus();
+    }
+
+    function openUsernameModal() {
+      usernameModal.classList.add("open");
+      usernameModal.setAttribute("aria-hidden", "false");
+      usernameEditInput.value = String(window.chatmCurrentUsername || "");
+      usernameEditInput.focus();
+    }
+
+    function closeGroupModal() {
+      groupModal.classList.remove("open");
+      groupModal.setAttribute("aria-hidden", "true");
+      groupForm.reset();
+      groupError.textContent = "";
+    }
+
+    function closeFriendModal() {
+      friendModal.classList.remove("open");
+      friendModal.setAttribute("aria-hidden", "true");
+      friendForm.reset();
+      friendError.textContent = "";
+      submitFriendBtn.disabled = false;
+    }
+
+    function closeUsernameModal() {
+      usernameModal.classList.remove("open");
+      usernameModal.setAttribute("aria-hidden", "true");
+      usernameForm.reset();
+      usernameError.textContent = "";
+      submitUsernameBtn.disabled = false;
+    }
+
+    function openRequestModal(request) {
+      activeRequest = request;
+      const label = request.fromUsername || request.fromEmail || "هذا المستخدم";
+      requestDesc.textContent = `${label} أضافك. هل تريد إضافته؟`;
+      requestError.textContent = "";
+      rejectRequestBtn.disabled = false;
+      acceptRequestBtn.disabled = false;
+      requestModal.classList.add("open");
+      requestModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeRequestModal() {
+      activeRequest = null;
+      requestModal.classList.remove("open");
+      requestModal.setAttribute("aria-hidden", "true");
+      requestError.textContent = "";
+      rejectRequestBtn.disabled = false;
+      acceptRequestBtn.disabled = false;
+    }
+
+    function showNextRequestIfAny() {
+      if (activeRequest || requestModal.classList.contains("open")) return;
+      if (!pendingRequests.length) return;
+      openRequestModal(pendingRequests[0]);
+    }
+
+    plusBtn.addEventListener("click", () => {
+      if (actionMenu.classList.contains("open")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    createGroupMenuItem.addEventListener("click", () => {
+      closeMenu();
+      openGroupModal();
+    });
+
+    addFriendMenuItem.addEventListener("click", () => {
+      closeMenu();
+      openFriendModal();
+    });
+
+    editUsernameMenuItem.addEventListener("click", () => {
+      closeMenu();
+      openUsernameModal();
+    });
+
+    toggleThemeMenuItem.addEventListener("click", () => {
+      toggleTheme();
+      closeMenu();
+    });
+
+    logoutMenuItem.addEventListener("click", async () => {
+      closeMenu();
+      const doSignOut = window.chatmSignOut;
+      if (typeof doSignOut !== "function") {
+        alert("تسجيل الخروج غير متاح الآن.");
+        return;
+      }
+      const result = await doSignOut();
+      if (!result?.ok) {
+        alert(result?.message || "تعذر تسجيل الخروج الآن.");
+        return;
+      }
+      location.replace("website.html");
+    });
+
+    cancelFriendBtn.addEventListener("click", closeFriendModal);
+    cancelUsernameBtn.addEventListener("click", closeUsernameModal);
+    cancelGroupBtn.addEventListener("click", closeGroupModal);
+
+    friendModal.addEventListener("click", (event) => {
+      if (event.target === friendModal) {
+        closeFriendModal();
+      }
+    });
+
+    usernameModal.addEventListener("click", (event) => {
+      if (event.target === usernameModal) {
+        closeUsernameModal();
+      }
+    });
+
+    requestModal.addEventListener("click", (event) => {
+      if (event.target === requestModal) {
+        closeRequestModal();
+      }
+    });
+
+    groupModal.addEventListener("click", (event) => {
+      if (event.target === groupModal) {
+        closeGroupModal();
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!actionMenu.contains(event.target) && !plusBtn.contains(event.target)) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeMenu();
+        closeFriendModal();
+        closeUsernameModal();
+        closeRequestModal();
+        closeGroupModal();
+      }
+    });
+
+    friendForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const lookup = friendLookupInput.value.trim();
+      if (!lookup) {
+        friendError.textContent = "أدخل اليوزر أو البريد الإلكتروني.";
+        return;
+      }
+
+      const addFriend = window.chatmAddFriendByIdentifier;
+      if (typeof addFriend !== "function") {
+        friendError.textContent = "ميزة إضافة الأصدقاء غير جاهزة الآن.";
+        return;
+      }
+
+      submitFriendBtn.disabled = true;
+      friendError.textContent = "";
+      const result = await addFriend(lookup);
+      if (!result?.ok) {
+        friendError.textContent = result?.message || "تعذر إضافة الصديق.";
+        submitFriendBtn.disabled = false;
+        return;
+      }
+
+      closeFriendModal();
+    });
+
+    usernameForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const username = usernameEditInput.value.trim();
+      if (!username) {
+        usernameError.textContent = "أدخل اسم المستخدم.";
+        return;
+      }
+
+      const updateUsername = window.chatmUpdateUsername;
+      if (typeof updateUsername !== "function") {
+        usernameError.textContent = "ميزة تعديل اليوزر غير جاهزة الآن.";
+        return;
+      }
+
+      submitUsernameBtn.disabled = true;
+      usernameError.textContent = "";
+      const result = await updateUsername(username);
+      if (!result?.ok) {
+        usernameError.textContent = result?.message || "تعذر تحديث اليوزر.";
+        submitUsernameBtn.disabled = false;
+        return;
+      }
+
+      closeUsernameModal();
+    });
+
+    rejectRequestBtn.addEventListener("click", async () => {
+      if (!activeRequest) return;
+      const rejectRequest = window.chatmRejectFriendRequest;
+      if (typeof rejectRequest !== "function") {
+        requestError.textContent = "ميزة الطلبات غير جاهزة الآن.";
+        return;
+      }
+
+      rejectRequestBtn.disabled = true;
+      acceptRequestBtn.disabled = true;
+      requestError.textContent = "";
+      const result = await rejectRequest(activeRequest);
+      if (!result?.ok) {
+        requestError.textContent = result?.message || "تعذر رفض الطلب.";
+        rejectRequestBtn.disabled = false;
+        acceptRequestBtn.disabled = false;
+        return;
+      }
+      closeRequestModal();
+      showNextRequestIfAny();
+    });
+
+    acceptRequestBtn.addEventListener("click", async () => {
+      if (!activeRequest) return;
+      const acceptRequest = window.chatmAcceptFriendRequest;
+      if (typeof acceptRequest !== "function") {
+        requestError.textContent = "ميزة الطلبات غير جاهزة الآن.";
+        return;
+      }
+
+      rejectRequestBtn.disabled = true;
+      acceptRequestBtn.disabled = true;
+      requestError.textContent = "";
+      const result = await acceptRequest(activeRequest);
+      if (!result?.ok) {
+        requestError.textContent = result?.message || "تعذر قبول الطلب.";
+        rejectRequestBtn.disabled = false;
+        acceptRequestBtn.disabled = false;
+        return;
+      }
+      closeRequestModal();
+      showNextRequestIfAny();
+    });
+
+    groupForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const groupName = groupNameInput.value.trim();
+      const selectedMembers = [...groupForm.querySelectorAll('input[name="members"]:checked')].map((input) => input.value);
+
+      if (!groupName) {
+        groupError.textContent = "اكتب اسم المجموعة.";
+        return;
+      }
+
+      if (selectedMembers.length < 2) {
+        groupError.textContent = "اختر عضوين على الأقل لإنشاء مجموعة.";
+        return;
+      }
+
+      groups.push({
+        id: `g${Date.now()}`,
+        name: groupName,
+        members: selectedMembers
+      });
+
+      persistGroups();
+      renderPeople();
+      closeGroupModal();
+    });
+
+    applyTheme(localStorage.getItem(themeStoreKey) || "light");
+    renderMembersChecklist();
+    renderPeople();
+    showNextRequestIfAny();
+  </script>
+</body>
+</html>

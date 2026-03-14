@@ -1,0 +1,438 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>انشاء حساب جديد</title>
+  <style>
+    :root {
+      --bg-top: #c8d3e2;
+      --bg-bottom: #bcc8da;
+      --card: #f7f7f7;
+      --line: #e5e5e5;
+      --text: #1c1552;
+      --muted: #9b9b9b;
+      --brand: #1c1552;
+      --brand-dark: #1c1552;
+      --fb: #2e5b9a;
+      --ig: #ffb347;
+      --in: #2b77b4;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.02) 70%);
+      pointer-events: none;
+    }
+
+    body::before {
+      top: -40px;
+      left: -50px;
+    }
+
+    body::after {
+      right: -90px;
+      bottom: -80px;
+    }
+
+    .page {
+      position: relative;
+      width: 100%;
+      max-width: 360px;
+      padding: 20px;
+    }
+
+    .card {
+      border-radius: 42px;
+      background: var(--card);
+      min-height: 700px;
+      padding: 56px 34px 34px;
+      box-shadow: 0 20px 36px rgba(24, 39, 75, 0.16);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-img {
+      display: block;
+      margin: 8px auto 0;
+      width: 96px;
+      height: auto;
+    }
+
+    .fields {
+      margin-top: 130px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .subtitle {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #7b769f;
+      text-align: center;
+    }
+
+    .input-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 0;
+    }
+
+    .icon {
+      width: 14px;
+      height: 14px;
+      color: var(--text);
+      flex: 0 0 auto;
+    }
+
+    .input-line input {
+      border: 0;
+      outline: 0;
+      background: transparent;
+      width: 100%;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .input-line input::placeholder {
+      color: #7b769f;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .login-btn {
+      margin-top: 34px;
+      border: 0;
+      height: 50px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      background: linear-gradient(90deg, var(--brand), var(--brand-dark));
+      cursor: pointer;
+      box-shadow: 0 12px 20px rgba(28, 21, 82, 0.32);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 24px rgba(28, 21, 82, 0.36);
+    }
+
+    @media (max-width: 420px) {
+      .page {
+        max-width: 100%;
+        padding: 10px;
+      }
+
+      .card {
+        min-height: 90vh;
+        border-radius: 34px;
+      }
+
+      .welcome {
+        font-size: 24px;
+      }
+
+      .login-btn {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+  <body>
+  <div class="page">
+    <main class="card" aria-label="نموذج انشاء حساب جديد">
+      <img class="logo-img" src="img/logo.png" alt="الشعار" />
+      <p class="subtitle">سجل دخولك باستخدام البريد الإلكتروني</p>
+
+      <form class="fields" action="#" method="post" id="signup-form">
+        <label class="input-line">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/>
+          </svg>
+          <input id="email-input" type="email" placeholder="البريد الإلكتروني" autocomplete="email" required />
+        </label>
+
+        <label class="input-line">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"/>
+          </svg>
+          <input id="username-input" type="text" placeholder="اسم المستخدم (بدون مسافات)" autocomplete="username" minlength="3" maxlength="20" />
+        </label>
+
+        <label class="input-line">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a5 5 0 0 0-5 5v2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 7V7a3 3 0 1 1 6 0v2H9zm3 4a2 2 0 0 1 1 3.73V18h-2v-1.27A2 2 0 0 1 12 13z"/>
+          </svg>
+          <input id="password-input" type="password" placeholder="كلمة المرور (6 أحرف على الأقل)" autocomplete="current-password" minlength="6" required />
+        </label>
+        <button class="login-btn" type="submit" id="create-btn">إنشاء / دخول</button>
+      </form>
+      <div id="auth-status" class="subtitle" style="margin-top:10px;"></div>
+
+    </main>
+  </div>
+  <script src="./firebase-config.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      createUserWithEmailAndPassword,
+      fetchSignInMethodsForEmail,
+      signInWithEmailAndPassword,
+      setPersistence,
+      browserLocalPersistence
+    } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      doc,
+      getDocs,
+      limit,
+      query,
+      setDoc,
+      serverTimestamp,
+      where
+    } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+    const form = document.getElementById("signup-form");
+    const emailInput = document.getElementById("email-input");
+    const usernameInput = document.getElementById("username-input");
+    const passwordInput = document.getElementById("password-input");
+    const createBtn = document.getElementById("create-btn");
+    const authStatus = document.getElementById("auth-status");
+
+    let auth = null;
+    let db = null;
+
+    function setStatus(message) {
+      authStatus.textContent = message;
+    }
+
+    function goToFriends() {
+      window.location.href = "friends.html";
+    }
+
+    function getAuthErrorMessage(error) {
+      const code = error?.code || "";
+      if (code === "auth/invalid-email") return "البريد الإلكتروني غير صالح. (" + code + ")";
+      if (code === "auth/missing-password") return "أدخل كلمة المرور. (" + code + ")";
+      if (code === "auth/weak-password") return "كلمة المرور ضعيفة. اجعلها 6 أحرف على الأقل. (" + code + ")";
+      if (code === "auth/invalid-credential") return "بيانات الدخول غير صحيحة. (" + code + ")";
+      if (code === "auth/wrong-password") return "كلمة المرور غير صحيحة. (" + code + ")";
+      if (code === "auth/user-not-found") return "لا يوجد حساب بهذا البريد. (" + code + ")";
+      if (code === "auth/too-many-requests") return "محاولات كثيرة. حاول بعد قليل. (" + code + ")";
+      if (code === "auth/operation-not-allowed") return "فعّل Email/Password من Firebase Authentication. (" + code + ")";
+      if (code === "auth/username-already-in-use") return "اسم المستخدم مستخدم بالفعل. اختر اسمًا آخر. (" + code + ")";
+      if (code === "auth/missing-username") return "أدخل اسم مستخدم لإنشاء الحساب الجديد. (" + code + ")";
+      if (code === "auth/invalid-username") return "اسم المستخدم يجب أن يكون من 3 إلى 20 حرفًا وبدون مسافات أو @. (" + code + ")";
+      if (error?.message) {
+        return code ? error.message + " (" + code + ")" : error.message;
+      }
+      return code ? "حدث خطأ غير متوقع. (" + code + ")" : "حدث خطأ غير متوقع.";
+    }
+
+    function isFirebaseConfigReady(config) {
+      if (!config || !config.apiKey || !config.authDomain || !config.projectId) return false;
+      return !Object.values(config).some(
+        (value) => typeof value === "string" && value.includes("PUT_YOUR_")
+      );
+    }
+
+    function normalizeUsername(value) {
+      return String(value || "").trim().replace(/^@+/, "");
+    }
+
+    function isUsernameValid(username) {
+      return /^[^\s@]{3,20}$/.test(username);
+    }
+
+    async function syncUserProfile(user, desiredUsername = "") {
+      if (!db || !user?.uid) return;
+      const normalizedEmail = String(user.email || "").trim().toLowerCase();
+      const normalizedUsername = normalizeUsername(desiredUsername);
+      const normalizedUsernameLower = normalizedUsername.toLowerCase();
+
+      if (normalizedUsername) {
+        const existingUsernameQuery = query(
+          collection(db, "users"),
+          where("usernameLower", "==", normalizedUsernameLower),
+          limit(1)
+        );
+        const existingUsernameSnapshot = await getDocs(existingUsernameQuery);
+        if (!existingUsernameSnapshot.empty && existingUsernameSnapshot.docs[0].id !== user.uid) {
+          const usernameError = new Error("اسم المستخدم مستخدم بالفعل.");
+          usernameError.code = "auth/username-already-in-use";
+          throw usernameError;
+        }
+      }
+
+      const profile = {
+        email: normalizedEmail,
+        emailLower: normalizedEmail,
+        lastSeen: serverTimestamp()
+      };
+
+      if (normalizedUsername) {
+        profile.username = normalizedUsername;
+        profile.usernameLower = normalizedUsernameLower;
+        profile.name = normalizedUsername;
+      }
+
+      await setDoc(
+        doc(db, "users", user.uid),
+        profile,
+        { merge: true }
+      );
+    }
+
+    async function initAuth() {
+      const firebaseConfig = window.CHATM_FIREBASE_CONFIG;
+      if (!isFirebaseConfigReady(firebaseConfig)) {
+        setStatus("أكمل إعداد firebase-config.js أولًا.");
+        createBtn.disabled = true;
+        return;
+      }
+
+      const app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+      auth.languageCode = "ar";
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+      } catch (error) {
+        console.warn("Local auth persistence unavailable, using session/in-memory fallback.", error);
+      }
+
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          try {
+            await syncUserProfile(user);
+          } catch (error) {
+            setStatus("تم تسجيل الدخول لكن تعذر تحديث الملف الشخصي: " + getAuthErrorMessage(error));
+          }
+          goToFriends();
+        }
+      });
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!auth) return;
+
+      if (!emailInput.value.trim()) {
+        emailInput.reportValidity();
+        return;
+      }
+      if (!passwordInput.value.trim()) {
+        passwordInput.reportValidity();
+        return;
+      }
+
+      const email = emailInput.value.trim().toLowerCase();
+      const username = normalizeUsername(usernameInput.value);
+      const password = passwordInput.value;
+      if (password.length < 6) {
+        setStatus("كلمة المرور يجب أن تكون 6 أحرف على الأقل.");
+        passwordInput.focus();
+        return;
+      }
+
+      try {
+        createBtn.disabled = true;
+        const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+        const userExists = Array.isArray(signInMethods) && signInMethods.length > 0;
+
+        if (userExists) {
+          await signInWithEmailAndPassword(auth, email, password);
+          if (username) {
+            if (!isUsernameValid(username)) {
+              const invalidUsernameError = new Error("اسم المستخدم غير صالح.");
+              invalidUsernameError.code = "auth/invalid-username";
+              throw invalidUsernameError;
+            }
+            await syncUserProfile(auth.currentUser, username);
+          }
+          setStatus("تم تسجيل الدخول بنجاح.");
+          goToFriends();
+          return;
+        }
+
+        if (!username) {
+          const missingUsernameError = new Error("أدخل اسم مستخدم لإنشاء الحساب.");
+          missingUsernameError.code = "auth/missing-username";
+          throw missingUsernameError;
+        }
+        if (!isUsernameValid(username)) {
+          const invalidUsernameError = new Error("اسم المستخدم غير صالح.");
+          invalidUsernameError.code = "auth/invalid-username";
+          throw invalidUsernameError;
+        }
+
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await syncUserProfile(userCredential.user, username);
+        setStatus("تم إنشاء الحساب بنجاح. جارِ الدخول...");
+        goToFriends();
+      } catch (error) {
+        if (error?.code === "auth/email-already-in-use") {
+          try {
+            await signInWithEmailAndPassword(auth, email, password);
+            if (username) {
+              if (!isUsernameValid(username)) {
+                const invalidUsernameError = new Error("اسم المستخدم غير صالح.");
+                invalidUsernameError.code = "auth/invalid-username";
+                throw invalidUsernameError;
+              }
+              await syncUserProfile(auth.currentUser, username);
+            }
+            setStatus("تم تسجيل الدخول بنجاح.");
+            goToFriends();
+            return;
+          } catch (signInError) {
+            setStatus("تعذر تسجيل الدخول: " + getAuthErrorMessage(signInError));
+            return;
+          }
+        }
+
+        const actionLabel = error?.code?.startsWith("auth/invalid-") || error?.code === "auth/missing-username"
+          ? "تعذر إنشاء الحساب"
+          : "تعذر المتابعة";
+        setStatus(actionLabel + ": " + getAuthErrorMessage(error));
+      } finally {
+        createBtn.disabled = false;
+      }
+    });
+
+    initAuth().catch((error) => {
+      setStatus("فشل تهيئة النظام: " + getAuthErrorMessage(error));
+    });
+  </script>
+</body>
+</html>
