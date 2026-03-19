@@ -21,6 +21,6 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHATM_8AEF }}
-          projectId: chatm-8aef
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHATM_E8AEF }}
+          projectId: chatm-e8aef
           channelId: live
