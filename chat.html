@@ -23,8 +23,9 @@
     .auth-btn{border:0;border-radius:12px;background:var(--brand);color:#fff;padding:10px 14px;cursor:pointer;font-weight:700}.auth-btn.ghost{background:#eceaf8;color:var(--text)}
     .auth-hint{margin:0;font-size:12px;color:var(--muted)}
     .chat-box{padding:16px;overflow:auto;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg,#fbfbff 0%,#f2f0fb 100%);direction:ltr}
-    .bubble{max-width:75%;padding:10px 12px;border-radius:14px;line-height:1.5;font-size:14px;word-wrap:break-word;position:relative;direction:rtl}
-    .bubble.me{align-self:flex-end;margin-left:auto;background:var(--bubble-me);color:#fff;text-align:right}.bubble.other{align-self:flex-start;margin-right:auto;background:var(--bubble-other);color:var(--text);border:1px solid #dad7ef;text-align:right}
+    .bubble{max-width:78%;padding:10px 12px;border-radius:14px;line-height:1.5;font-size:14px;word-wrap:break-word;position:relative;direction:rtl}
+    .bubble.me{align-self:flex-start;margin-right:auto;background:var(--bubble-me);color:#fff;text-align:right}
+    .bubble.other{align-self:flex-end;margin-left:auto;background:var(--bubble-other);color:var(--text);border:1px solid #dad7ef;text-align:right}
     .bubble-meta{display:block;font-size:11px;margin-top:8px;opacity:.85;text-align:inherit}
     .bubble-delete{position:absolute;top:8px;left:8px;border:0;background:transparent;color:inherit;cursor:pointer;font-size:16px;padding:0;line-height:1}
     .bubble.me .bubble-delete{left:8px;right:auto}
@@ -48,7 +49,8 @@
     .modal h2{margin:0;font-size:20px}.info-row{margin-top:10px;font-size:14px;color:var(--text)}.info-label{color:var(--muted);margin-left:6px}
     .modal-actions{margin-top:18px;display:flex;gap:8px;justify-content:flex-end}.btn{border:0;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:700}
     .btn.ghost{background:#eceaf8;color:var(--text)}.btn.danger{background:#b42318;color:#fff}
-    @media (max-width:720px){body{padding:10px}.chat{min-height:calc(100vh - 20px);border-radius:22px}.composer{padding:10px;gap:8px}.composer input{min-width:0}.attach-menu{min-width:170px;max-width:calc(100vw - 24px)}}
+    @media (max-width:720px){body{padding:10px}.chat{min-height:calc(100vh - 20px);border-radius:22px}.chat-header{padding:10px 12px}.name{font-size:16px}.avatar-btn{width:36px;height:36px}.chat-box{padding:12px}.bubble{max-width:88%}.composer{padding:10px;gap:8px}.composer input{min-width:0}.composer button{padding:10px 12px}.attach-menu{min-width:170px;max-width:calc(100vw - 24px)}}
+    @media (max-width:420px){.bubble{max-width:92%;font-size:13px}.chat-header{gap:8px}.back{padding:6px 10px;font-size:12px}.chat-box{gap:8px}.bubble-meta{font-size:10px}}
   </style>
 </head>
 <body>

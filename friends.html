@@ -365,6 +365,50 @@
     .group-status {
       color: #6b5bd1;
     }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 10px;
+      }
+
+      .page {
+        min-height: calc(100vh - 20px);
+        border-radius: 22px;
+      }
+
+      .header {
+        padding: 12px 14px;
+      }
+
+      .people-list {
+        padding: 0 10px;
+        max-height: calc(100vh - 170px);
+      }
+
+      .person-link {
+        padding: 12px 4px;
+        gap: 10px;
+      }
+
+      .avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+      }
+
+      .person-name {
+        font-size: 15px;
+      }
+
+      .person-preview {
+        max-width: 160px;
+      }
+
+      .modal {
+        width: min(420px, 100%);
+        padding: 16px;
+      }
+    }
   </style>
 </head>
 <body>
