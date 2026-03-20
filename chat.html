@@ -7,6 +7,7 @@
   <style>
     :root{--bg-top:#c8d3e2;--bg-bottom:#bcc8da;--card:#f7f7f7;--line:#d8d8e5;--text:#1c1552;--muted:#7b769f;--brand:#1c1552;--bubble-me:#1c1552;--bubble-other:#eceaf8;--ok:#24a148;--error:#b42318;--warn:#946200}
     *{box-sizing:border-box;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif}
+    :root{--vh:1vh}
     html,body{height:100%;width:100%}
     body{margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));color:var(--text);padding:20px}
     .chat{max-width:760px;margin:0 auto;background:var(--card);border-radius:30px;box-shadow:0 20px 36px rgba(24,39,75,.16);border:1px solid #fff;min-height:calc(100vh - 40px);display:grid;grid-template-rows:auto auto auto 1fr auto;overflow:hidden;height:100%}
@@ -50,7 +51,7 @@
     .modal h2{margin:0;font-size:20px}.info-row{margin-top:10px;font-size:14px;color:var(--text)}.info-label{color:var(--muted);margin-left:6px}
     .modal-actions{margin-top:18px;display:flex;gap:8px;justify-content:flex-end}.btn{border:0;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:700}
     .btn.ghost{background:#eceaf8;color:var(--text)}.btn.danger{background:#b42318;color:#fff}
-    @media (max-width:720px){body{padding:0;height:100dvh;overflow:hidden;overflow-x:hidden}.chat{width:100%;max-width:100%;min-height:100dvh;height:100dvh;border-radius:0;margin:0}.chat-header{padding:10px 12px}.name{font-size:16px}.avatar-btn{width:36px;height:36px}.chat-box{padding-top:12px;padding-bottom:12px;padding-left:calc(12px + env(safe-area-inset-left));padding-right:calc(12px + env(safe-area-inset-right))}.bubble{max-width:90%}.composer{padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom));padding-left:calc(10px + env(safe-area-inset-left));padding-right:calc(10px + env(safe-area-inset-right));gap:8px}.composer input{min-width:0}.composer button{padding:10px 12px}.attach-menu{min-width:170px;max-width:calc(100vw - 24px)}}
+    @media (max-width:720px){body{padding:0;height:calc(var(--vh,1vh) * 100);overflow:hidden;overflow-x:hidden}.chat{width:100%;max-width:100%;min-height:calc(var(--vh,1vh) * 100);height:calc(var(--vh,1vh) * 100);border-radius:0;margin:0}.chat-header{padding:10px 12px}.name{font-size:16px}.avatar-btn{width:36px;height:36px}.chat-box{padding-top:12px;padding-bottom:12px;padding-left:calc(12px + env(safe-area-inset-left));padding-right:calc(12px + env(safe-area-inset-right))}.bubble{max-width:90%}.composer{padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom));padding-left:calc(10px + env(safe-area-inset-left));padding-right:calc(10px + env(safe-area-inset-right));gap:8px}.composer input{min-width:0}.composer button{padding:10px 12px}.attach-menu{min-width:170px;max-width:calc(100vw - 24px)}}
     @media (max-width:420px){.bubble{max-width:92%;font-size:13px}.chat-header{gap:8px}.back{padding:6px 10px;font-size:12px}.chat-box{gap:8px}.bubble-meta{font-size:10px}}
   </style>
 </head>
@@ -169,6 +170,10 @@
     deleteForEveryoneBtn.addEventListener("click",async()=>{if(!selectedMessage?.id)return;if(selectedMessage.senderUid!==currentUser?.uid){showNotice("يمكن حذف رسائلك فقط عند الجميع.","warn");return}try{await deleteMessageForEveryone(selectedMessage);closeDeleteMessageModal()}catch(e){showNotice("تعذر حذف الرسالة عند الجميع: "+e.message,"error")}});
     deleteMessageModal.addEventListener("click",(e)=>{if(e.target===deleteMessageModal)closeDeleteMessageModal()});
     document.addEventListener("keydown",(e)=>{if(e.key==="Escape"){closeInfo();closeAttachMenu();closeDeleteMessageModal()}});
+    function updateViewportHeight(){const h=window.visualViewport?window.visualViewport.height:window.innerHeight;document.documentElement.style.setProperty("--vh",`${h*0.01}px`)}
+    updateViewportHeight();
+    window.addEventListener("resize",updateViewportHeight);
+    if(window.visualViewport){window.visualViewport.addEventListener("resize",updateViewportHeight)}
     setupChatMeta();renderMessages([]);setComposerEnabled(false);initFirebase();
   </script>
 </body>
