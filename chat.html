@@ -7,8 +7,9 @@
   <style>
     :root{--bg-top:#c8d3e2;--bg-bottom:#bcc8da;--card:#f7f7f7;--line:#d8d8e5;--text:#1c1552;--muted:#7b769f;--brand:#1c1552;--bubble-me:#1c1552;--bubble-other:#eceaf8;--ok:#24a148;--error:#b42318;--warn:#946200}
     *{box-sizing:border-box;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif}
+    html,body{height:100%}
     body{margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));color:var(--text);padding:20px}
-    .chat{max-width:760px;margin:0 auto;background:var(--card);border-radius:30px;box-shadow:0 20px 36px rgba(24,39,75,.16);border:1px solid #fff;min-height:calc(100vh - 40px);display:grid;grid-template-rows:auto auto auto 1fr auto;overflow:hidden}
+    .chat{max-width:760px;margin:0 auto;background:var(--card);border-radius:30px;box-shadow:0 20px 36px rgba(24,39,75,.16);border:1px solid #fff;min-height:calc(100vh - 40px);display:grid;grid-template-rows:auto auto auto 1fr auto;overflow:hidden;height:100%}
     .chat-header{padding:14px;border-bottom:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px}
     .chat-user{display:flex;align-items:center;gap:10px}
     .back{border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;text-decoration:none;color:var(--text);font-size:13px;font-weight:700}
@@ -22,7 +23,7 @@
     .auth-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(28,21,82,.1)}
     .auth-btn{border:0;border-radius:12px;background:var(--brand);color:#fff;padding:10px 14px;cursor:pointer;font-weight:700}.auth-btn.ghost{background:#eceaf8;color:var(--text)}
     .auth-hint{margin:0;font-size:12px;color:var(--muted)}
-    .chat-box{padding:16px;overflow:auto;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg,#fbfbff 0%,#f2f0fb 100%);direction:ltr}
+    .chat-box{padding:16px;overflow:auto;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg,#fbfbff 0%,#f2f0fb 100%);direction:ltr;min-height:0;overscroll-behavior:contain}
     .bubble{max-width:78%;padding:24px 12px 10px;border-radius:14px;line-height:1.5;font-size:14px;word-wrap:break-word;position:relative;direction:rtl}
     .bubble.me{align-self:flex-start;margin-right:auto;background:var(--bubble-me);color:#fff;text-align:right}
     .bubble.other{align-self:flex-end;margin-left:auto;background:var(--bubble-other);color:var(--text);border:1px solid #dad7ef;text-align:right}
@@ -34,7 +35,7 @@
     .bubble.other .attachment img,.bubble.other .attachment video{border-color:#dad7ef}
     .attachment-file{display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:8px 10px;background:rgba(255,255,255,.15);color:inherit;text-decoration:none;font-size:13px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .bubble.other .attachment-file{background:#fff;border:1px solid #dad7ef}.empty-state{margin:auto;text-align:center;color:var(--muted);font-size:14px}
-    .composer{border-top:1px solid var(--line);padding:12px;display:flex;gap:10px;align-items:center;overflow:visible;background:#fff;padding-bottom:calc(12px + env(safe-area-inset-bottom))}.composer.disabled{opacity:.55;pointer-events:none}
+    .composer{border-top:1px solid var(--line);padding:12px;display:flex;gap:10px;align-items:center;overflow:visible;background:#fff;padding-bottom:calc(12px + env(safe-area-inset-bottom));position:sticky;bottom:0}.composer.disabled{opacity:.55;pointer-events:none}
     .composer input{flex:1;border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:14px;color:var(--text);outline:none}
     .composer input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(28,21,82,.1)}
     .composer button{border:0;border-radius:14px;background:var(--brand);color:#fff;padding:10px 16px;cursor:pointer;font-weight:700}
@@ -49,7 +50,7 @@
     .modal h2{margin:0;font-size:20px}.info-row{margin-top:10px;font-size:14px;color:var(--text)}.info-label{color:var(--muted);margin-left:6px}
     .modal-actions{margin-top:18px;display:flex;gap:8px;justify-content:flex-end}.btn{border:0;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:700}
     .btn.ghost{background:#eceaf8;color:var(--text)}.btn.danger{background:#b42318;color:#fff}
-    @media (max-width:720px){body{padding:0;height:100dvh}.chat{width:100%;max-width:100%;min-height:100dvh;height:100dvh;border-radius:0}.chat-header{padding:10px 12px}.name{font-size:16px}.avatar-btn{width:36px;height:36px}.chat-box{padding:12px}.bubble{max-width:90%}.composer{padding:10px;gap:8px}.composer input{min-width:0}.composer button{padding:10px 12px}.attach-menu{min-width:170px;max-width:calc(100vw - 24px)}}
+    @media (max-width:720px){body{padding:0;height:100dvh;overflow:hidden}.chat{width:100%;max-width:100%;min-height:100dvh;height:100dvh;border-radius:0}.chat-header{padding:10px 12px}.name{font-size:16px}.avatar-btn{width:36px;height:36px}.chat-box{padding:12px}.bubble{max-width:90%}.composer{padding:10px;gap:8px}.composer input{min-width:0}.composer button{padding:10px 12px}.attach-menu{min-width:170px;max-width:calc(100vw - 24px)}}
     @media (max-width:420px){.bubble{max-width:92%;font-size:13px}.chat-header{gap:8px}.back{padding:6px 10px;font-size:12px}.chat-box{gap:8px}.bubble-meta{font-size:10px}}
   </style>
 </head>
@@ -86,8 +87,6 @@
     <div class="modal" role="dialog" aria-modal="true" aria-label="معلومات المحادثة">
       <h2>معلومات المحادثة</h2>
       <div class="info-row"><span class="info-label">الاسم:</span><span id="infoName"></span></div>
-      <div class="info-row"><span class="info-label">النوع:</span><span id="infoType"></span></div>
-      <div class="info-row"><span class="info-label">الحالة:</span><span id="infoStatus"></span></div>
       <div id="infoMembersRow" class="info-row" style="display:none;"><span class="info-label">الأعضاء:</span><span id="infoMembers"></span></div>
       <div class="modal-actions"><button id="closeInfoBtn" class="btn ghost" type="button">إغلاق</button><button id="deleteChatBtn" class="btn danger" type="button">حذف الشخص</button></div>
     </div>
@@ -122,7 +121,7 @@
     const personNameEl=document.getElementById("personName"),chatStatusEl=document.getElementById("chatStatus"),avatarBtn=document.getElementById("avatarBtn");
     const chatBox=document.getElementById("chatBox"),composer=document.getElementById("composer"),messageInput=document.getElementById("messageInput");
     const attachBtn=document.getElementById("attachBtn"),attachMenu=document.getElementById("attachMenu"),imagePicker=document.getElementById("imagePicker"),videoPicker=document.getElementById("videoPicker"),cameraPicker=document.getElementById("cameraPicker"),filePicker=document.getElementById("filePicker");
-    const infoModal=document.getElementById("infoModal"),closeInfoBtn=document.getElementById("closeInfoBtn"),deleteChatBtn=document.getElementById("deleteChatBtn"),infoName=document.getElementById("infoName"),infoType=document.getElementById("infoType"),infoStatus=document.getElementById("infoStatus"),infoMembers=document.getElementById("infoMembers"),infoMembersRow=document.getElementById("infoMembersRow");
+    const infoModal=document.getElementById("infoModal"),closeInfoBtn=document.getElementById("closeInfoBtn"),deleteChatBtn=document.getElementById("deleteChatBtn"),infoName=document.getElementById("infoName"),infoMembers=document.getElementById("infoMembers"),infoMembersRow=document.getElementById("infoMembersRow");
     const deleteMessageModal=document.getElementById("deleteMessageModal"),deleteMessageText=document.getElementById("deleteMessageText"),closeDeleteMessageBtn=document.getElementById("closeDeleteMessageBtn"),deleteForMeBtn=document.getElementById("deleteForMeBtn"),deleteForEveryoneBtn=document.getElementById("deleteForEveryoneBtn");
     const notice=document.getElementById("notice"),sendBtn=document.getElementById("sendBtn");
 
@@ -147,7 +146,7 @@
     function attachListener(){if(!db)return;if(unsubscribeMessages){unsubscribeMessages();unsubscribeMessages=null}const q=query(collection(db,"conversations",chatKey,"messages"),orderBy("createdAt","asc"),limit(300));unsubscribeMessages=onSnapshot(q,async(s)=>{renderMessages(s.docs.map((d)=>{const x=d.data();return {id:d.id,...x,createdAt:x.createdAt&&x.createdAt.toDate?x.createdAt.toDate():new Date()}}));if(personId&&currentUser){try{await markDirectChatRead()}catch(e){}}},(e)=>showNotice("فشل تحميل الرسائل: "+e.message,"error"))}
     async function deleteMessageForEveryone(message){if(!db||!message?.id)return;await deleteDoc(doc(db,"conversations",chatKey,"messages",message.id))}
     async function deletePersonOrGroup(){if(!currentUser)return;const label=chatMeta?.type==="group"?"المجموعة":"الشخص";if(!confirm(`سيتم حذف ${label} من قائمتك. متابعة؟`))return;try{if(chatMeta?.type==="group"){const nextGroups=groups.filter((g)=>g.id!==groupId);localStorage.setItem("chatm-groups",JSON.stringify(nextGroups))}else if(personId&&db){await deleteDoc(doc(db,"users",currentUser.uid,"friends",personId))}location.replace("friends.html")}catch(e){showNotice("تعذر تنفيذ الحذف: "+e.message,"error")}}
-    function openInfo(){infoName.textContent=chatMeta.name;infoType.textContent=chatMeta.type==="group"?"مجموعة":"شخص";infoStatus.textContent=chatMeta.status;if(chatMeta.type==="group"){infoMembersRow.style.display="";infoMembers.textContent=chatMeta.membersText||"-"}else{infoMembersRow.style.display="none"}infoModal.classList.add("open");infoModal.setAttribute("aria-hidden","false")}
+    function openInfo(){infoName.textContent=chatMeta.name;if(chatMeta.type==="group"){infoMembersRow.style.display="";infoMembers.textContent=chatMeta.membersText||"-"}else{infoMembersRow.style.display="none"}infoModal.classList.add("open");infoModal.setAttribute("aria-hidden","false")}
     function closeInfo(){infoModal.classList.remove("open");infoModal.setAttribute("aria-hidden","true")}
     function toggleAttachMenu(){const open=attachMenu.classList.toggle("open");attachMenu.setAttribute("aria-hidden",open?"false":"true");if(open)positionAttachMenu()}
     function closeAttachMenu(){attachMenu.classList.remove("open");attachMenu.setAttribute("aria-hidden","true");attachMenu.classList.remove("align-right");attachMenu.style.left="";attachMenu.style.right=""}
